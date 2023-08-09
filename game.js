@@ -10,8 +10,7 @@
 
  function setCanvasSize(){
     // para hacer que el canvas adopte el tamaño de la ventana html se requiere de realizar los siguientes comandos
-    
-    canvasSize = Math.min(canvasSize = window.innerHeight *.7, canvasSize = window.innerWidth *.7);
+    canvasSize = Math.min(canvasSize = window.innerHeight *.8, canvasSize = window.innerWidth *.8);
     canvas.setAttribute( 'width', canvasSize );
     canvas.setAttribute( 'height', canvasSize);
     // dividinos el canvas entre 10 
@@ -32,10 +31,20 @@
     //game.fillText( 'Pandamonio', 25, 25);
 
     game.font = elementSize + 'px Verdana'; // debemos de poner tanto tamaño y tipo de fuente
-    for (let x = 0; x < 10; x++) {
-        for (let y = 1; y <= 10; y++) {
-            game.fillText ( emojis['X'], elementSize * x, elementSize * y ) ;
+    game.textAlign = 'end';
+
+    // obtengo el primer mapa
+    const map = maps[2];
+    // lo trasformo en renglones
+    const mapRows = map.trim().split('\n'); // limpio los inicions con split genero los row
+
+    const mapRowCols = mapRows.map( row => row.trim().split('') );
+
+    for (let row = 1;  row <= 10; row++) {
+        for (let col = 1; col <= 10; col++) {
+            game.fillText ( emojis[mapRowCols[row -1 ][col -1]], elementSize * col, elementSize * row ) ;
         }
-    } 
-    console.log({canvasSize, elementSize});
+    }
+    console.log({map, mapRows, mapRowCols}); 
+    //console.log({canvasSize, elementSize, map});
 }
