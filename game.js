@@ -9,8 +9,14 @@
     //game.cleanRect();
     //game.cleanRect(50,50,50,50);
 
-    game.font - '25px Vernada';
-    game.fillStyle = 'purple';
-    game.textAlign = 'left';
-    game.fillText( 'Pandamonio', 25, 25);  
+    //game.font - '25px Vernada';
+    //game.fillStyle = 'purple';
+    //game.textAlign = 'left';
+    //game.fillText( 'Pandamonio', 25, 25); 
+
+
+    canvas.setAttribute( 'width', window.innerWidth *.75 );
+    canvas.setAttribute( 'height', window.innerHeight *.5);
+
+    
  }
