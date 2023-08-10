@@ -1,16 +1,21 @@
- const canvas = document.querySelector('#game');
- const game = canvas.getContext('2d');
- let canvasSize;
- let elementSize;
- const btnUp = document.querySelector('#up');
- const btnLeft = document.querySelector('#left');
- const btnRight = document.querySelector('#right');
- const btnDown = document.querySelector('#down');
+const canvas = document.querySelector('#game');
+const game = canvas.getContext('2d');
+let canvasSize;
+let elementSize;
+const btnUp = document.querySelector('#up');
+const btnLeft = document.querySelector('#left');
+const btnRight = document.querySelector('#right');
+const btnDown = document.querySelector('#down');
+
+const playerPosition = {
+    x: undefined,
+    y: undefined,
+}
 
 
- // Este es el orden correcto para que el render no borre las bombas y ordenar los procesos en funciones
- window.addEventListener('load', setCanvasSize);
- window.addEventListener('resize', setCanvasSize);
+// Este es el orden correcto para que el render no borre las bombas y ordenar los procesos en funciones
+window.addEventListener('load', setCanvasSize);
+window.addEventListener('resize', setCanvasSize);
 
 window.addEventListener('keydown', moveByKeys);//ArrowUp
 window.addEventListener('keydown', moveByKeys);//ArrowLeft
@@ -62,7 +67,15 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
             const posY = elementSize * (rowI + 1);
             game.fillText( emoji, posX, posY);
             //console.log({valor, colI, rowI});
+
+            if( valor == 'O' ){
+                //console.log();
+                playerPosition.x = posX;
+                playerPosition.y = posY;
+            }
         })
+
+        movePlayer();
     });
 
     /*
@@ -89,21 +102,31 @@ function moveByKeys(event){
         moveDown();
 }
 
-function moveUp(){
-    console.log('mover arriba');
+function movePlayer(){
+    game.fillText( emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
+function moveUp(){
+    console.log('mover arriba');
+    playerPosition.y -= elementSize;
+    movePlayer();
+}
 
 function moveLeft(){
     console.log('mover Izquierda');
+    playerPosition.x -= elementSize;
+    movePlayer();
 }
-
 
 function moveRight(){
     console.log('mover Derecha');
-}
+    playerPosition.x += elementSize;
 
+    movePlayer();
+}
 
 function moveDown(){
     console.log('mover Abajo');
+    playerPosition.y += elementSize;
+    movePlayer();
 }
