@@ -59,6 +59,9 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
     const mapRowCols = mapRows.map( row => row.trim().split('') );
 
 
+    // vamos a borrar todo el mapa por cada movimiento del player
+    game.clearRect(0,0, canvasSize, canvasSize);
+
     // refactorizar el metodo con el uso de doble for
     mapRowCols.forEach( (row, rowI) => {
         row.forEach( ( valor, colI) =>{
@@ -69,9 +72,12 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
             //console.log({valor, colI, rowI});
 
             if( valor == 'O' ){
-                //console.log();
-                playerPosition.x = posX;
-                playerPosition.y = posY;
+                if( !playerPosition.y && !playerPosition.y){
+                    //console.log();
+                    playerPosition.x = posX;
+                    playerPosition.y = posY;
+                
+                }
             }
         })
 
@@ -109,24 +115,27 @@ function movePlayer(){
 function moveUp(){
     console.log('mover arriba');
     playerPosition.y -= elementSize;
-    movePlayer();
+    //movePlayer();
+    startGame()
 }
 
 function moveLeft(){
     console.log('mover Izquierda');
     playerPosition.x -= elementSize;
-    movePlayer();
+    //movePlayer();
+    startGame()
 }
 
 function moveRight(){
     console.log('mover Derecha');
     playerPosition.x += elementSize;
-
-    movePlayer();
+    //movePlayer();
+    startGame()
 }
 
 function moveDown(){
     console.log('mover Abajo');
     playerPosition.y += elementSize;
-    movePlayer();
+    //movePlayer();
+    startGame()
 }
