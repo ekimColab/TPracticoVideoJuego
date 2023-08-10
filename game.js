@@ -2,11 +2,25 @@
  const game = canvas.getContext('2d');
  let canvasSize;
  let elementSize;
+ const btnUp = document.querySelector('#up');
+ const btnLeft = document.querySelector('#left');
+ const btnRight = document.querySelector('#right');
+ const btnDown = document.querySelector('#down');
+
 
  // Este es el orden correcto para que el render no borre las bombas y ordenar los procesos en funciones
  window.addEventListener('load', setCanvasSize);
  window.addEventListener('resize', setCanvasSize);
 
+window.addEventListener('keydown', moveByKeys);//ArrowUp
+window.addEventListener('keydown', moveByKeys);//ArrowLeft
+window.addEventListener('keydown', moveByKeys);//ArrowRight
+window.addEventListener('keydown', moveByKeys);//ArrowDown
+
+ btnUp.addEventListener( 'click', moveUp );
+ btnLeft.addEventListener( 'click', moveLeft );
+ btnRight.addEventListener( 'click', moveRight );
+ btnDown.addEventListener( 'click', moveDown );
 
  function setCanvasSize(){
     // para hacer que el canvas adopte el tamaño de la ventana html se requiere de realizar los siguientes comandos
@@ -37,14 +51,59 @@
     const map = maps[2];
     // lo trasformo en renglones
     const mapRows = map.trim().split('\n'); // limpio los inicions con split genero los row
-
     const mapRowCols = mapRows.map( row => row.trim().split('') );
 
+
+    // refactorizar el metodo con el uso de doble for
+    mapRowCols.forEach( (row, rowI) => {
+        row.forEach( ( valor, colI) =>{
+            const emoji = emojis[ valor ];
+            const posX = elementSize * (colI + 1);
+            const posY = elementSize * (rowI + 1);
+            game.fillText( emoji, posX, posY);
+            //console.log({valor, colI, rowI});
+        })
+    });
+
+    /*
     for (let row = 1;  row <= 10; row++) {
         for (let col = 1; col <= 10; col++) {
             game.fillText ( emojis[mapRowCols[row -1 ][col -1]], elementSize * col, elementSize * row ) ;
         }
     }
-    console.log({map, mapRows, mapRowCols}); 
+    */
+    //console.log({map, mapRows, mapRowCols}); 
     //console.log({canvasSize, elementSize, map});
+}
+
+// recive el evento de lo que esta pasando
+function moveByKeys(event){
+    //console.log(event);
+    if( event.key == 'ArrowUp')
+        moveUp();
+    else if( event.key == 'ArrowLeft')
+        moveLeft();
+    else if( event.key == 'ArrowRight')
+        moveRight();
+    else if( event.key == 'ArrowDown')
+        moveDown();
+}
+
+function moveUp(){
+    console.log('mover arriba');
+}
+
+
+function moveLeft(){
+    console.log('mover Izquierda');
+}
+
+
+function moveRight(){
+    console.log('mover Derecha');
+}
+
+
+function moveDown(){
+    console.log('mover Abajo');
 }
