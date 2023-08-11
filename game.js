@@ -29,7 +29,7 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
 
  function setCanvasSize(){
     // para hacer que el canvas adopte el tamaño de la ventana html se requiere de realizar los siguientes comandos
-    canvasSize = Math.min(canvasSize = window.innerHeight *.8, canvasSize = window.innerWidth *.8);
+    canvasSize = Math.ceil(Math.min(canvasSize = window.innerHeight *.8, canvasSize = window.innerWidth *.8));
     canvas.setAttribute( 'width', canvasSize );
     canvas.setAttribute( 'height', canvasSize);
     // dividinos el canvas entre 10 
@@ -53,7 +53,7 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
     game.textAlign = 'end';
 
     // obtengo el primer mapa
-    const map = maps[2];
+    const map = maps[1];
     // lo trasformo en renglones
     const mapRows = map.trim().split('\n'); // limpio los inicions con split genero los row
     const mapRowCols = mapRows.map( row => row.trim().split('') );
@@ -73,10 +73,9 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
 
             if( valor == 'O' ){
                 if( !playerPosition.y && !playerPosition.y){
-                    //console.log();
+                    //console.log({elementSize, canvasSize, playerPosition});
                     playerPosition.x = posX;
                     playerPosition.y = posY;
-                
                 }
             }
         })
@@ -113,29 +112,50 @@ function movePlayer(){
 }
 
 function moveUp(){
-    console.log('mover arriba');
-    playerPosition.y -= elementSize;
-    //movePlayer();
-    startGame()
+    
+    const X = playerPosition.x;
+    const Y = playerPosition.y;
+    console.log({elementSize, canvasSize, X, Y});
+    if( Math.floor(playerPosition.y) > Math.floor(elementSize) ){
+        playerPosition.y -= elementSize;
+        //movePlayer();
+        console.log('mover arriba');
+        startGame()
+    }
 }
 
 function moveLeft(){
     console.log('mover Izquierda');
-    playerPosition.x -= elementSize;
-    //movePlayer();
-    startGame()
+    const X = playerPosition.x;
+    const Y = playerPosition.y;
+    console.log({elementSize, canvasSize, X, Y});
+    if( Math.floor(playerPosition.x) > Math.floor(elementSize) ){
+        playerPosition.x -= elementSize;
+        //movePlayer();
+        startGame()
+    }
 }
 
 function moveRight(){
     console.log('mover Derecha');
-    playerPosition.x += elementSize;
-    //movePlayer();
-    startGame()
+    const X = playerPosition.x;
+    const Y = playerPosition.y;
+    console.log({elementSize, canvasSize, X, Y});
+    if( Math.floor(playerPosition.x + elementSize) <= Math.floor(canvasSize ) ){
+        playerPosition.x += elementSize;
+        //movePlayer();
+        startGame()
+    }
 }
 
 function moveDown(){
     console.log('mover Abajo');
-    playerPosition.y += elementSize;
-    //movePlayer();
-    startGame()
+    const X = playerPosition.x;
+    const Y = playerPosition.y;
+    console.log({elementSize, canvasSize, X, Y});
+    if( Math.floor(playerPosition.y + elementSize) <= Math.floor(canvasSize ) ){
+        playerPosition.y += elementSize;
+        //movePlayer();
+        startGame()
+    }
 }
