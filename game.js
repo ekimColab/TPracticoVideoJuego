@@ -10,9 +10,9 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+const spamLives = document.querySelector('#spanLives')
+
 let mapRowCols =[];
-
-
 const playerPosition = {
     x: undefined,
     y: undefined,
@@ -69,6 +69,8 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
         //gameWin();
         return;
     }
+
+    showLives()
 
     console.log({lives, level, });
     // lo trasformo en renglones
@@ -157,21 +159,23 @@ function gameWin(){
 }
 
 function levelFail(){
-    
-    
     lives --;
-
     if( lives <= 0 ){
         console.log('Perdiste una vida ')
         level = 0;
         lives = 3;
     } 
-    
-    modal.style.display = "block";
-
+    //modal.style.display = "block";
     playerPosition.x = undefined;
     playerPosition.y = undefined;
     startGame(); 
+}
+
+
+function showLives(){
+    spamLives.innerHTML='';
+    const heartsArray = Array(lives).fill(emojis['HEART']);
+    heartsArray.forEach( heart => spamLives.append(heart));
 }
 
 function moveUp(){
