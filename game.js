@@ -4,6 +4,7 @@ let canvasSize;
 let elementSize;
 
 let level = 0;
+let hayIntentos =3;
 
 const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
@@ -65,10 +66,16 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
     const map = maps[level];
 
     if( !map){
-        gameWin();
+        //gameWin();
         return;
     }
 
+    if( !hayIntentos > 0 ){
+        //intento();
+        //return;
+    }
+
+    console.log({hayIntentos, level, });
     // lo trasformo en renglones
     const mapRows = map.trim().split('\n'); // limpio los inicions con split genero los row
     mapRowCols = mapRows.map( row => row.trim().split('') );
@@ -129,23 +136,26 @@ function movePlayer(){
     const posiX = (playerPosition.x/elementSize)-1;
     const posiY = (playerPosition.y/elementSize)-1;
 
+    game.fillText( emojis['PLAYER'], playerPosition.x, playerPosition.y);
+
     if( playerPosition.x == gitPosition.x && playerPosition.y == gitPosition.y){
-            console.log('encontro el bambu');
-            levelWin();
+        console.log('encontro el bambu');
+        levelWin();
 
 
     }else if( mapRowCols[posiY][posiX] == 'X' ){
-        console.log('Ha una bomba X');
+        console.log('Hay una bomba X'); 
+        //intento();
+        modal.style.display = "block";
     } else {
         console.log('Ok');
     }
 
     //console.log( {elementSize, mapRowCols, playerPosition, posiX ,posiY} );
-    game.fillText( emojis['PLAYER'], playerPosition.x, playerPosition.y);
+    
 }
 
 function levelWin(){
-    
     console.log('Subiste de Nivel');
     level++;
     startGame();
@@ -153,6 +163,17 @@ function levelWin(){
 
 function gameWin(){
 
+}
+
+function intento(){
+    
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    hayIntentos--;
+
+    console.log('perdiste un intento de 3');
+    
+    startGame();
 }
 
 function moveUp(){
