@@ -4,7 +4,7 @@ let canvasSize;
 let elementSize;
 
 let level = 0;
-let hayIntentos =3;
+let lives = 3;
 
 const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
@@ -70,12 +70,7 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
         return;
     }
 
-    if( !hayIntentos > 0 ){
-        //intento();
-        //return;
-    }
-
-    console.log({hayIntentos, level, });
+    console.log({lives, level, });
     // lo trasformo en renglones
     const mapRows = map.trim().split('\n'); // limpio los inicions con split genero los row
     mapRowCols = mapRows.map( row => row.trim().split('') );
@@ -136,21 +131,17 @@ function movePlayer(){
     const posiX = (playerPosition.x/elementSize)-1;
     const posiY = (playerPosition.y/elementSize)-1;
 
-    game.fillText( emojis['PLAYER'], playerPosition.x, playerPosition.y);
-
     if( playerPosition.x == gitPosition.x && playerPosition.y == gitPosition.y){
-        console.log('encontro el bambu');
+        //console.log('encontro el bambu');
         levelWin();
-
-
     }else if( mapRowCols[posiY][posiX] == 'X' ){
-        console.log('Hay una bomba X'); 
-        //intento();
-        modal.style.display = "block";
+        //console.log('Hay una bomba X'); 
+        levelFail();
     } else {
         console.log('Ok');
     }
 
+    game.fillText( emojis['PLAYER'], playerPosition.x, playerPosition.y);
     //console.log( {elementSize, mapRowCols, playerPosition, posiX ,posiY} );
     
 }
@@ -165,15 +156,22 @@ function gameWin(){
 
 }
 
-function intento(){
+function levelFail(){
     
+    
+    lives --;
+
+    if( lives <= 0 ){
+        console.log('Perdiste una vida ')
+        level = 0;
+        lives = 3;
+    } 
+    
+    modal.style.display = "block";
+
     playerPosition.x = undefined;
     playerPosition.y = undefined;
-    hayIntentos--;
-
-    console.log('perdiste un intento de 3');
-    
-    startGame();
+    startGame(); 
 }
 
 function moveUp(){
@@ -184,7 +182,7 @@ function moveUp(){
     if( Math.floor(playerPosition.y) > Math.floor(elementSize) ){
         playerPosition.y -= elementSize;
         //movePlayer();
-        console.log('mover arriba');
+        //console.log('mover arriba');
         startGame()
     }
 }
