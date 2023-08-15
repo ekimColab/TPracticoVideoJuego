@@ -2,16 +2,25 @@ const canvas = document.querySelector('#game');
 const game = canvas.getContext('2d');
 let canvasSize;
 let elementSize;
+
+let level = 0;
+
 const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+let mapRowCols =[];
+
 
 const playerPosition = {
     x: undefined,
     y: undefined,
 }
 
+const gitPosition ={
+    x: undefined,
+    y: undefined,
+}
 
 // Este es el orden correcto para que el render no borre las bombas y ordenar los procesos en funciones
 window.addEventListener('load', setCanvasSize);
@@ -29,11 +38,11 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
 
  function setCanvasSize(){
     // para hacer que el canvas adopte el tamaño de la ventana html se requiere de realizar los siguientes comandos
-    canvasSize = Math.ceil(Math.min(canvasSize = window.innerHeight *.8, canvasSize = window.innerWidth *.8));
+    elementSize = Math.round((Math.min(canvasSize = window.innerHeight *.8, canvasSize = window.innerWidth *.8)) /10);
+    canvasSize = elementSize*10;
+
     canvas.setAttribute( 'width', canvasSize );
     canvas.setAttribute( 'height', canvasSize);
-    // dividinos el canvas entre 10 
-    elementSize = canvasSize /10;
 
     startGame()
  }
@@ -53,10 +62,16 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
     game.textAlign = 'end';
 
     // obtengo el primer mapa
-    const map = maps[1];
+    const map = maps[level];
+
+    if( !map){
+        gameWin();
+        return;
+    }
+
     // lo trasformo en renglones
     const mapRows = map.trim().split('\n'); // limpio los inicions con split genero los row
-    const mapRowCols = mapRows.map( row => row.trim().split('') );
+    mapRowCols = mapRows.map( row => row.trim().split('') );
 
 
     // vamos a borrar todo el mapa por cada movimiento del player
@@ -77,12 +92,14 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
                     playerPosition.x = posX;
                     playerPosition.y = posY;
                 }
+            }else if( valor == 'I'){
+                gitPosition.x = posX;
+                gitPosition.y = posY;
             }
         })
-
-        movePlayer();
     });
 
+    movePlayer();
     /*
     for (let row = 1;  row <= 10; row++) {
         for (let col = 1; col <= 10; col++) {
@@ -108,14 +125,41 @@ function moveByKeys(event){
 }
 
 function movePlayer(){
+
+    const posiX = (playerPosition.x/elementSize)-1;
+    const posiY = (playerPosition.y/elementSize)-1;
+
+    if( playerPosition.x == gitPosition.x && playerPosition.y == gitPosition.y){
+            console.log('encontro el bambu');
+            levelWin();
+
+
+    }else if( mapRowCols[posiY][posiX] == 'X' ){
+        console.log('Ha una bomba X');
+    } else {
+        console.log('Ok');
+    }
+
+    //console.log( {elementSize, mapRowCols, playerPosition, posiX ,posiY} );
     game.fillText( emojis['PLAYER'], playerPosition.x, playerPosition.y);
+}
+
+function levelWin(){
+    
+    console.log('Subiste de Nivel');
+    level++;
+    startGame();
+}
+
+function gameWin(){
+
 }
 
 function moveUp(){
     
     const X = playerPosition.x;
     const Y = playerPosition.y;
-    console.log({elementSize, canvasSize, X, Y});
+    //console.log({elementSize, canvasSize, X, Y});
     if( Math.floor(playerPosition.y) > Math.floor(elementSize) ){
         playerPosition.y -= elementSize;
         //movePlayer();
@@ -125,10 +169,10 @@ function moveUp(){
 }
 
 function moveLeft(){
-    console.log('mover Izquierda');
+    //console.log('mover Izquierda');
     const X = playerPosition.x;
     const Y = playerPosition.y;
-    console.log({elementSize, canvasSize, X, Y});
+    //console.log({elementSize, canvasSize, X, Y});
     if( Math.floor(playerPosition.x) > Math.floor(elementSize) ){
         playerPosition.x -= elementSize;
         //movePlayer();
@@ -137,10 +181,10 @@ function moveLeft(){
 }
 
 function moveRight(){
-    console.log('mover Derecha');
+    //console.log('mover Derecha');
     const X = playerPosition.x;
     const Y = playerPosition.y;
-    console.log({elementSize, canvasSize, X, Y});
+    //console.log({elementSize, canvasSize, X, Y});
     if( Math.floor(playerPosition.x + elementSize) <= Math.floor(canvasSize ) ){
         playerPosition.x += elementSize;
         //movePlayer();
@@ -149,10 +193,10 @@ function moveRight(){
 }
 
 function moveDown(){
-    console.log('mover Abajo');
+    //console.log('mover Abajo');
     const X = playerPosition.x;
     const Y = playerPosition.y;
-    console.log({elementSize, canvasSize, X, Y});
+    //console.log({elementSize, canvasSize, X, Y});
     if( Math.floor(playerPosition.y + elementSize) <= Math.floor(canvasSize ) ){
         playerPosition.y += elementSize;
         //movePlayer();
