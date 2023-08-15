@@ -6,11 +6,16 @@ let elementSize;
 let level = 0;
 let lives = 3;
 
+let timeStart ;
+let timePlayer ;
+let timeInterval;
+
 const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
-const spamLives = document.querySelector('#spanLives')
+const spamLives = document.querySelector('#spanLives');
+const spamTime = document.querySelector('#time');
 
 let mapRowCols =[];
 const playerPosition = {
@@ -66,8 +71,13 @@ window.addEventListener('keydown', moveByKeys);//ArrowDown
     const map = maps[level];
 
     if( !map){
-        //gameWin();
+        gameWin();
         return;
+    }
+
+    if( !timeStart){
+        timeStart = Date.now();
+        timeInterval = setInterval(showTime, 100);
     }
 
     showLives()
@@ -155,7 +165,8 @@ function levelWin(){
 }
 
 function gameWin(){
-
+    console.log('Terminaste el juego')
+    clearInterval(timeInterval);
 }
 
 function levelFail(){
@@ -164,6 +175,7 @@ function levelFail(){
         console.log('Perdiste una vida ')
         level = 0;
         lives = 3;
+        timeStart = undefined;
     } 
     //modal.style.display = "block";
     playerPosition.x = undefined;
@@ -171,11 +183,14 @@ function levelFail(){
     startGame(); 
 }
 
-
 function showLives(){
     spamLives.innerHTML='';
     const heartsArray = Array(lives).fill(emojis['HEART']);
     heartsArray.forEach( heart => spamLives.append(heart));
+}
+
+function showTime(){
+    spamTime.innerHTML =  Date.now() - timeStart;
 }
 
 function moveUp(){
