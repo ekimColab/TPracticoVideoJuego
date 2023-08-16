@@ -166,7 +166,9 @@ function levelWin(){
 
 function gameWin(){
     console.log('Terminaste el juego')
-    clearInterval(timeInterval);
+    
+    clearInterval(timeStart);
+
 }
 
 function levelFail(){
